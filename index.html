@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	
+	<title>SPO</title>
+	
+</head>
+<body>
+	
+	<div class="resultados"></div>
+	
+	<script type="text/javascript">
+		
+		const embed = function ( uri ) {
+			let html = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${uri}?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+			return html;
+		};
+		const buscar = function (lobuscado) {
+		
+			const options = {
+				method: 'GET',
+				headers: {
+					'X-RapidAPI-Key': '98d8757727msh41ea8bae09d95c0p125af3jsnd81dae475fd1',
+					'X-RapidAPI-Host': 'spotify23.p.rapidapi.com'
+				}
+			};
+			
+			fetch(`https://spotify23.p.rapidapi.com/search/?q=%3C${lobuscado}%3E&type=multi&offset=0&limit=2&numberOfTopResults=5`, options)
+			.then(response => response.json())
+			.then(response => {
+				console.log( response.tracks.items[0].data.id );
+				for ( let count = 0; count <= response.tracks.items.length-1; count ++ ) {
+					// $(".resultados").append( `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7JZ5mOTea5T4LH0UdwCsWx?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>` );
+					const resumen = response.tracks.items[ count ];
+					console.log( resumen.data );
+					const id = response.tracks.items[count].data.id;
+					$(".resultados").append( embed(id) )
+				};
+			});
+		};
+		
+		buscar("duki");
+	</script>
+	
+</body>
+</html>
