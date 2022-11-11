@@ -1,4 +1,14 @@
-import { getMusic, getArtist, buscar } from "./functions.js";
+import {
+	getMusic,
+	getArtist,
+	buscar,
+	loading,
+} from "./functions.js";
+
+// setTimeout(() => {
+// 	console.log("JE!");
+// 	$(".resultados").html(loading);
+// }, 2000);
 
 $("header .buscador button").on("click", function () {
 	const lobuscado = $(this).parent().find("input").val();

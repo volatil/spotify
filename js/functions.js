@@ -1,7 +1,31 @@
+import {
+	RAPID_KEY,
+	RAPID_HOST,
+} from "./constants.js";
+
+const loading = `
+	<div id="loading">
+		<div class="load-wrapp">
+			<div class="load-3">
+				<div class="line"></div>
+				<div class="line"></div>
+				<div class="line"></div>
+			</div>
+		</div>
+	</div>
+`;
+
+const getAlbums = function ( uri ) {
+	const html = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/${uri}" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+	console.log(html);
+	return html;
+};
+
 const getMusic = function ( uri ) {
 	const html = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${uri}" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
 	return html;
 };
+
 const getArtist = function ( artist ) {
 	const html = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/${artist}" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
 	return html;
@@ -11,8 +35,8 @@ const buscar = function (lobuscado) {
 	const options = {
 		method: "GET",
 		headers: {
-			"X-RapidAPI-Key": "98d8757727msh41ea8bae09d95c0p125af3jsnd81dae475fd1",
-			"X-RapidAPI-Host": "spotify23.p.rapidapi.com",
+			"X-RapidAPI-Key": RAPID_KEY,
+			"X-RapidAPI-Host": RAPID_HOST,
 		},
 	};
 
@@ -21,10 +45,19 @@ const buscar = function (lobuscado) {
 		.then((response) => {
 			console.log( response );
 
+			// ALBUMS
+			$(".resultados").append("<div data-tema='albums'><h2>Albums</h2></div>");
+			for ( let count = 0; count <= response.tracks.items.length - 1; count++ ) {
+				let album = response.albums.items[count].data.uri;
+				console.log( `ALBUM 1 -> ${album}` );
+				album = album.split("album:")[1];
+				console.log( `ALBUM 2 -> ${album}` );
+				$(".resultados div[data-tema=albums]").append( getAlbums(album) );
+			}
+
 			// MUSICA
 			$(".resultados").append("<div data-tema='musica'><h2>Canciones</h2></div>");
 			for ( let count = 0; count <= response.tracks.items.length - 1; count++ ) {
-				const resumen = response.tracks.items[count];
 				const id = response.tracks.items[count].data.id;
 				$(".resultados div[data-tema=musica]").append( getMusic(id) );
 			}
@@ -32,12 +65,17 @@ const buscar = function (lobuscado) {
 			// ARTISTAS
 			$(".resultados").append("<div data-tema='artistas'><h2>Artistas</h2></div>");
 			for ( let count = 0; count <= response.artists.items.length - 1; count++ ) {
-				const resumen = response.artists.items[count];
 				let artist = response.artists.items[count].data.uri;
 				artist = artist.split("artist:")[1];
 				$(".resultados div[data-tema=artistas]").append( getArtist(artist) );
 			}
 		});
+	$("#loading").remove();
 };
 
-export { getMusic, getArtist, buscar };
+export {
+	loading,
+	getMusic,
+	getArtist,
+	buscar,
+};
