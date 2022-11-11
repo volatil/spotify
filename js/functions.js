@@ -17,7 +17,6 @@ const loading = `
 
 const getAlbums = function ( uri ) {
 	const html = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/${uri}" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
-	console.log(html);
 	return html;
 };
 
@@ -49,9 +48,7 @@ const buscar = function (lobuscado) {
 			$(".resultados").append("<div data-tema='albums'><h2>Albums</h2></div>");
 			for ( let count = 0; count <= response.tracks.items.length - 1; count++ ) {
 				let album = response.albums.items[count].data.uri;
-				console.log( `ALBUM 1 -> ${album}` );
 				album = album.split("album:")[1];
-				console.log( `ALBUM 2 -> ${album}` );
 				$(".resultados div[data-tema=albums]").append( getAlbums(album) );
 			}
 
