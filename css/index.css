@@ -94,4 +94,15 @@ header .buscador button:hover {
   animation: Loading 0.6s 0.1s linear infinite;
 }
 
+footer {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #e9f;
+  margin-top: 100px;
+  padding: 20px 20px 0;
+}
+footer img {
+  height: 30px;
+}
+
 /*# sourceMappingURL=index.css.map */
